@@ -1,0 +1,1 @@
+{"receipts":[{"id":"R1","household":"H1","site":"HALL","item":"water","count":4,"at":"2026-07-01T11:00:00+08:00","signature":"sig-H1"},{"id":"R2","household":"H2","site":"HALL","item":"water","count":1,"at":"2026-07-01T11:10:00+08:00","signature":"sig-H2"}]}

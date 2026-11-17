@@ -1,0 +1,1 @@
+{"shipments":[{"id":"S2","site":"HALL","item":"water","expected":3,"seal":"Z2"}],"counts":[{"id":"A2","shipment":"S2","counted":3,"seal":"BROKEN"}]}
