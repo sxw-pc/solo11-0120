@@ -1,0 +1,1 @@
+{"returns":[{"id":"RET1TM","equipment":"P1","claim":"CT1","filter":"F1","holder":"clinic-A","site":"HALL","witness":"supervisor-1","body_present":true,"filter_present":false,"condition":"ok","returned_at":"2026-07-02T09:00:00+08:00","document_sha":"doc-return-A-transfer-missing-filter"}]}

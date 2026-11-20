@@ -18,6 +18,11 @@ def ingest(path, kind, file, handler):
             return result
     except Exception as exc:
         with db:
-            db.execute("INSERT INTO source_failure(kind,sha,raw,error) VALUES (?,?,?,?)",(kind,sha,raw,str(exc)))
+            failure=db.execute("INSERT INTO source_failure(kind,sha,raw,error) VALUES (?,?,?,?)",
+                               (kind,sha,raw,str(exc))).lastrowid
+            # A rejected document may still have to leave durable evidence and
+            # freeze later dispositions even though its business rows roll back.
+            persist=getattr(exc,"persist_after_rollback",None)
+            if persist: persist(db,failure,sha)
         raise
     finally: db.close()

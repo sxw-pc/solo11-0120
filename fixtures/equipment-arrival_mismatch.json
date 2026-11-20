@@ -1,0 +1,3 @@
+{"shipments":[{"id":"SE2","site":"HALL","item":"purifier","expected":2,"seal":"ZE2"}],
+ "counts":[{"id":"AE2","shipment":"SE2","counted":2,"seal":"ZE2"}],
+ "manifests":[{"id":"ME2","arrival":"AE2","kind":"purifier","reusable":true,"units":[{"equipment":"P2","filter":"F2"}]}]}
