@@ -12,8 +12,11 @@ CREATE TABLE IF NOT EXISTS entitlement(household_id TEXT REFERENCES household(id
 CREATE TABLE IF NOT EXISTS eligibility_review(id TEXT PRIMARY KEY,household_id TEXT REFERENCES household(id),decision TEXT,valid_until TEXT,reviewer TEXT,proof_sha TEXT,source_id INTEGER REFERENCES source_blob(id));
 CREATE TABLE IF NOT EXISTS delivery_receipt(id TEXT PRIMARY KEY,household_id TEXT REFERENCES household(id),site TEXT,item TEXT,quantity INTEGER,delivered_at TEXT,signature TEXT,status TEXT,reason TEXT,source_id INTEGER REFERENCES source_blob(id));
 CREATE TABLE IF NOT EXISTS shortage_case(id INTEGER PRIMARY KEY,household_id TEXT REFERENCES household(id),item TEXT,receipt_id TEXT REFERENCES delivery_receipt(id),missing INTEGER,reason TEXT,status TEXT);
+CREATE TABLE IF NOT EXISTS region(name TEXT PRIMARY KEY,sites TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS publication(id INTEGER PRIMARY KEY,scope TEXT NOT NULL,granularity TEXT NOT NULL,sites TEXT NOT NULL,item TEXT NOT NULL,cutoff TEXT NOT NULL,value INTEGER NOT NULL,population TEXT NOT NULL,depends_on TEXT NOT NULL,source_version TEXT NOT NULL,published_at TEXT NOT NULL,UNIQUE(scope,item,cutoff));
+CREATE TABLE IF NOT EXISTS publication_proposal(id INTEGER PRIMARY KEY,scope TEXT NOT NULL,item TEXT NOT NULL,cutoff TEXT NOT NULL,decision TEXT NOT NULL,value INTEGER NOT NULL,reason TEXT NOT NULL,depends_on TEXT NOT NULL,violations TEXT NOT NULL,source_version TEXT NOT NULL,pub_state TEXT NOT NULL,publication_id INTEGER REFERENCES publication(id),created_at TEXT NOT NULL);
 """
-TABLES=["source_blob","shipment","arrival_count","arrival_reconciliation","household","entitlement","eligibility_review","delivery_receipt","shortage_case"]
+TABLES=["source_blob","shipment","arrival_count","arrival_reconciliation","household","entitlement","eligibility_review","delivery_receipt","shortage_case","region","publication","publication_proposal"]
 TABLES.insert(1,"source_failure")
 def connect(path):
     p=Path(path);p.parent.mkdir(parents=True,exist_ok=True)
