@@ -1,1 +1,1 @@
-{"reconciliations":[{"id":"ARC2","arrival":"A2","witness1":"volunteer-1","witness2":"volunteer-1","verified_count":3,"photo_sha":"photo-abc123","reason":"one person only"}]}
+{"reconciliations": [{"id": "ARC2", "arrival": "A2", "witness1": "volunteer-1", "witness2": "volunteer-1", "verified_count": 3, "photo_sha": "photo-abc123", "reason": "one person only", "reconciled_at": "2026-07-01T11:05:00+08:00"}]}

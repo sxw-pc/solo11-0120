@@ -2,11 +2,12 @@ import argparse
 import json
 import tempfile
 from pathlib import Path
-from .domain import arrival_import,household_import,delivery_import,arrival_reconcile,eligibility_review
+from .domain import arrival_import,household_import,delivery_import,arrival_reconcile,eligibility_review,picking_import,recall_import
 from .report import report,report_json
 
 COMMANDS={"arrival-import":arrival_import,"household-import":household_import,"delivery-import":delivery_import,
-          "arrival-reconcile":arrival_reconcile,"eligibility-review":eligibility_review}
+          "arrival-reconcile":arrival_reconcile,"eligibility-review":eligibility_review,
+          "picking-import":picking_import,"recall-import":recall_import}
 
 def demo(workdir=None):
     root=Path(workdir or tempfile.mkdtemp(prefix="reliefhandoff-"))
@@ -14,7 +15,7 @@ def demo(workdir=None):
     db=root/"data.db"
     fixtures=Path.cwd()/"fixtures"
     results={}
-    for name in ("arrival-import","household-import","delivery-import"):
+    for name in ("arrival-import","household-import","picking-import","delivery-import"):
         func=COMMANDS[name]
         results[name]=func(db,fixtures/(name+"_normal.json"))
     return {"db":str(db),"results":results}
@@ -24,6 +25,7 @@ def decision_demo(workdir=None):
     db=root/"data.db";f=Path.cwd()/"fixtures"
     arrival_import(db,f/"arrival-import_normal.json")
     household_import(db,f/"household-import_normal.json")
+    picking_import(db,f/"picking-import_normal.json")
     delivery_import(db,f/"delivery-import_normal.json")
     partial=report(db)["shortage_case"][0]["status"]
     arrival_import(db,f/"arrival-import_conflict.json")
