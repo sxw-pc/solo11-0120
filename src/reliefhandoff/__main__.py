@@ -3,7 +3,8 @@ import json
 import tempfile
 from pathlib import Path
 from .domain import arrival_import,household_import,delivery_import,arrival_reconcile,eligibility_review
-from .report import report,report_json
+from .report import report,report_json,public_proposal,public_proposal_json,public_ledger_json
+from .publication import define_region
 
 COMMANDS={"arrival-import":arrival_import,"household-import":household_import,"delivery-import":delivery_import,
           "arrival-reconcile":arrival_reconcile,"eligibility-review":eligibility_review}
@@ -42,9 +43,20 @@ def main():
     d=subs.add_parser("demo");d.add_argument("--workdir")
     dd=subs.add_parser("demo-decisions");dd.add_argument("--workdir")
     r=subs.add_parser("report");r.add_argument("--db",required=True)
+    rd=subs.add_parser("region-define");rd.add_argument("--db",required=True);rd.add_argument("--code",required=True)
+    rd.add_argument("--name",required=True);rd.add_argument("--sites",required=True,help="comma-separated site codes fixed before certification")
+    pp=subs.add_parser("publication-propose");pp.add_argument("--db",required=True);pp.add_argument("--scope",required=True)
+    pp.add_argument("--item",required=True);pp.add_argument("--cutoff",required=True)
+    pp.add_argument("--publish",action="store_true",help="formally publish when certification is safe; default is trial run only")
+    pl=subs.add_parser("publication-list");pl.add_argument("--db",required=True)
     args=parser.parse_args()
     if args.command=="demo":print(json.dumps(demo(args.workdir),ensure_ascii=False))
     elif args.command=="demo-decisions":print(json.dumps(decision_demo(args.workdir),ensure_ascii=False))
     elif args.command=="report":print(report_json(args.db))
+    elif args.command=="region-define":
+        print(json.dumps(define_region(args.db,args.code,args.name,[s.strip() for s in args.sites.split(",") if s.strip()]),
+                         ensure_ascii=False))
+    elif args.command=="publication-propose":print(public_proposal_json(args.db,args.scope,args.item,args.cutoff,publish=args.publish))
+    elif args.command=="publication-list":print(public_ledger_json(args.db))
     else:print(json.dumps(COMMANDS[args.command](args.db,args.file),ensure_ascii=False))
 if __name__=="__main__":main()
